@@ -14,7 +14,6 @@ int main(int ac, char **av)
 	stack_t *stack = NULL;
 	unsigned int line_number = 1;
 
-	/* CHECKING NUMBER OF ARGUMENTS */
 	if (ac != 2)
 		exit(EXIT_FAILURE);
 
@@ -23,7 +22,7 @@ int main(int ac, char **av)
 		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-	/* OPENING FILE */
+	
 	file = fopen(av[1], "r");
 
 	if (file == NULL)
@@ -32,16 +31,12 @@ int main(int ac, char **av)
 		exit (EXIT_FAILURE);
 	}
 
-	/* GETTING TEXT LINE OF OPEN FILE */
 	while (getline(&line, &buffline, file) != -1)
 	{
-		/* TOKENIZATION */
 		tokens = tokenization(line, " \n");
 		if (tokens[0] != NULL || tokens[1] != NULL)
 		{
-			/* COMPARE TOKEN AND CALL FUNCTION */
 			get_op_func(tokens)(&stack, line_number, line, file);
-			/* COUNT LINES OF THE FILE PROCESS */
 			line_number++;
 		}
 		free(tokens[1]);
