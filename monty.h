@@ -1,6 +1,17 @@
 #ifndef MONTY_H
 #define MONTY_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stddef.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <limits.h>
+#include <unistd.h>
+
+char **tokenization(char *str, char *delim);
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -29,9 +40,17 @@ typedef struct instruction_s
         char *opcode;
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
-Compilation & Output
-Your code will be compiled this way:
 
-
+extern char **tokens;
+void pint(stack_t **stack, unsigned int line_number, char *line, FILE *file);
+void free_listint(stack_t *stack);
+void (*get_op_func(char **tokens))(stack_t **stack, unsigned int line_number, char *line, FILE *file);
+void push(stack_t **stack, unsigned int line_number, char *line, FILE *file);
+void pall(stack_t **stack, unsigned int line_numberar, char  *line, FILE *file);
+void add(stack_t **stack, unsigned int line_number, char *line, FILE *file);
+void pop(stack_t **stack, unsigned int line_number, char *line, FILE *file);
+void nop(stack_t **stack, unsigned int line_number, char *line, FILE *file);
+void swap(stack_t **stack, unsigned int line_number, char *line, FILE *file);
+void unkn_func(stack_t **stack, unsigned int line_number, char *line, FILE *file);
 
 #endif
