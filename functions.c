@@ -1,55 +1,74 @@
 #include "monty.h"
-
+char **tokens = NULL;
 /**
  * push - push a new node to the stack
  * @stack: linked list of nodes
  * @line_number: line number
+ * @line: pointer to string of getline function
+ * @file: file in use
  */
-void push(stack_t **stack, unsigned int line_number)
+void push(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
+	(void) line_number;
 	int p_int;
 
-	if (tokens[1] == NULL)
-	{
-		fprintf(stderr, "L%d: usage: push integer\n", line_number);
-		exit_with_failure();
-	}
-
-	p_int = atoi(tokens[1]);
-
-	if (p_int == 0 && strcmp(tokens[1], "0") != 0)
-	{
-		fprintf(stderr, "L%d: usage: push integer\n", line_number);
-		exit_with_failure();
-	}
-
 	stack_t *node = malloc(sizeof(stack_t));
-	if (node == NULL)
+
+	if (node == NULL || tokens[1] == NULL)
 	{
-		fprintf(stderr, "Memory allocation error\n");
-		exit_with_failure();
+		fprintf(stderr, "L%d: usage: push integer\n", line_number);
+		free(tokens[1]);
+		free(tokens[0]);
+		free(tokens);
+		free(line);
+		free(node);
+		free_listint(*stack);
+		fclose(file);
+		exit(EXIT_FAILURE);
+	}
+	if (node != NULL)
+	{
+		if (tokens[1] != NULL)
+		{
+			p_int = atoi(tokens[1]);
+		}
+
+		if (strcmp(tokens[1], "0") != 0 && p_int == 0)
+		{
+			fprintf(stderr, "L%d: usage: push integer\n", line_number);
+			free(tokens[1]);
+			free(tokens[0]);
+			free(tokens);
+			free(line);
+			free(node);
+			free_listint(*stack);
+			fclose(file);
+			exit(EXIT_FAILURE);
+		}
+		node->prev = NULL;
+		node->n = p_int;
+		node->next = (*stack);
+		if (node->next != NULL)
+		{
+			node->next->prev = node;
+		}
+			*stack = node;
 	}
 
-	node->n = p_int;
-	node->prev = NULL;
-	node->next = *stack;
-
-	if (*stack != NULL)
-	{
-		(*stack)->prev = node;
-	}
-
-	*stack = node;
 }
-
 /**
  * pall - print all on the stack
  * @stack: linked list of nodes
- * @line_number: line number
+ * @line_number: line number for errors
+ * @line: pointer to string of getline function
+ * @file: file in use
  */
-void pall(stack_t **stack, unsigned int line_number)
+void pall(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
 	stack_t *temp = *stack;
+	(void)line_number;
+	(void)line;
+	(void)file;
 
 	while (temp != NULL)
 	{
@@ -57,78 +76,81 @@ void pall(stack_t **stack, unsigned int line_number)
 		temp = temp->next;
 	}
 }
-
 /**
  * pint - prints the value at the top of the stack
  * @stack: linked list of nodes
- * @line_number: line number
+ * @line_number: line number for errors
+ * @line: pointer to string of getline function
+ * @file: file in use
  */
-void pint(stack_t **stack, unsigned int line_number)
+void pint(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
-	if (*stack == NULL)
-	{
-		fprintf(stderr, "L%u: can't pint, stack empty\n", line_number);
-		exit_with_failure();
-	}
-
-	printf("%d\n", (*stack)->n);
-}
-
-/**
- * pop - delete node
- * @stack: linked list of nodes
- */
-void pop(stack_t **stack)
-{
-	if (*stack == NULL)
-	{
-		fprintf(stderr, "Pop error: can't pop an empty stack\n");
-		exit_with_failure();
-	}
-
-	stack_t *head = *stack;
-	*stack = (*stack)->next;
+	(void)line_number;
 
 	if (*stack != NULL)
 	{
-		(*stack)->prev = NULL;
-	}
-
-	free(head);
-}
-/**
- * swap - swaps the top two elements of the stack
- * @stack: stack
- * @line_number: line number
- */
-void swap(stack_t **stack, unsigned int line_number)
-{
-	stack_t *head = *stack;
-	stack_t *body;
-
-	if (head != NULL && (body = head->next) != NULL)
-	{
-		int temp = head->n;
-		head->n = body->n;
-		body->n = temp;
+		printf("%d\n", (*stack)->n);
 	}
 	else
 	{
-		fprintf(stderr, "L%u: can't swap, stack too short\n", line_number);
-		exit_with_failure();
+		fprintf(stderr, "L%u: can't pint, stack empty\n", line_number);
+		free(tokens[1]);
+		free(tokens[0]);
+		free(tokens);
+		free(line);
+		fclose(file);
+		exit(EXIT_FAILURE);
 	}
 }
-
 /**
- * exit_with_failure - Clean up and exit with failure status
+ * sum - summ all elements with in linked list
+ * @stack: head of linked list
+ * Return: sum of elements
  */
-void exit_with_failure()
+void add(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
-	free(tokens[1]);
-	free(tokens[0]);
-	free(tokens);
-	free_listint(*stack);
-	free(line);
-	fclose(file);
-	exit(EXIT_FAILURE);
+	(void)line_number;
+	(void)line;
+	(void)file;
+	int sum;
+
+	sum = (*stack)->n + (*stack)->next->n;
+	*stack = (*stack)->next;
+	(*stack)->n = sum;
+	free((*stack)->prev);
+
+		/*sum += (*stack)->next->n;
+		*stack = (*stack)->next;*/
+}
+/**
+ * pop - delet node
+ *
+ */
+void pop(stack_t **stack, unsigned int line_number, char *line, FILE *file)
+{
+	(void)file;
+	(void)line;
+
+	stack_t *head = *stack;
+
+	if (head != NULL)
+	{
+
+		*stack = (*stack)->next;
+		if (*stack != NULL)
+		{
+			(*stack)->prev = NULL;
+		}
+		free(head);
+	}
+	else
+	{
+		fprintf(stderr, "L%u: can't pop an empty stack\n", line_number);
+		free(tokens[1]);
+		free(tokens[0]);
+		free(tokens);
+		free(line);
+		free(file);
+		exit(EXIT_FAILURE);
+	}
 }
