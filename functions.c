@@ -9,10 +9,10 @@ char **tokens = NULL;
  */
 void push(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
-	(void) line_number;
 	int p_int;
-
 	stack_t *node = malloc(sizeof(stack_t));
+	(void) line_number;
+
 
 	if (node == NULL || tokens[1] == NULL)
 	{
@@ -109,10 +109,10 @@ void pint(stack_t **stack, unsigned int line_number, char *line, FILE *file)
  */
 void add(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
+	int sum;
 	(void)line_number;
 	(void)line;
 	(void)file;
-	int sum;
 
 	sum = (*stack)->n + (*stack)->next->n;
 	*stack = (*stack)->next;
@@ -128,10 +128,10 @@ void add(stack_t **stack, unsigned int line_number, char *line, FILE *file)
  */
 void pop(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
+	stack_t *head = *stack;
 	(void)file;
 	(void)line;
 
-	stack_t *head = *stack;
 
 	if (head != NULL)
 	{
