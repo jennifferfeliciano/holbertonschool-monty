@@ -41,16 +41,17 @@ typedef struct instruction_s
         void (*f)(stack_t **stack, unsigned int line_number, char *line, FILE *file);
 } instruction_t;
 
-extern char **tokens;
-void free_listint(stack_t *stack);
-void (*get_op_func(char **tokens))(stack_t **stack, unsigned int line_number, char *line, FILE *file);
 void push(stack_t **stack, unsigned int line_number, char *line, FILE *file);
 void pall(stack_t **stack, unsigned int line_number, char *line, FILE *file);
 void pint(stack_t **stack, unsigned int line_number, char *line, FILE *file);
-void add(stack_t **stack, unsigned int line_number, char *line, FILE *file);
-void nop(stack_t **stack, unsigned int line_number, char *line, FILE *file);
 void pop(stack_t **stack, unsigned int line_number, char *line, FILE *file);
 void swap(stack_t **stack, unsigned int line_number, char *line, FILE *file);
+void add(stack_t **stack, unsigned int line_number, char *line, FILE *file);
+void nop(stack_t **stack, unsigned int line_number, char *line, FILE *file);
 void unkn_func(stack_t **stack, unsigned int line_number, char *line, FILE *file);
+void (*get_op_func(char **tokens))(stack_t **stack, unsigned int line_number, char *line, FILE *file);
+char **tokenization(char *str, char *delim);
+void free_listint(stack_t *stack);
+extern char **tokens;
 
 #endif
