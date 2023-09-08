@@ -36,7 +36,7 @@ int main(int ac, char **av)
 		tokens = tokenization(cmd, " \n");
 		if (tokens[0] != NULL || tokens[1] != NULL)
 		{
-			get_op_func(tokens)(&stack, line_number, cmd, fd;
+			get_op_func(tokens)(&stack, line_number, cmd, fd);
 			line_number++;
 		}
 		free(tokens[1]);
