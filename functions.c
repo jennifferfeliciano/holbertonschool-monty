@@ -7,46 +7,62 @@
  * @cmd: original command from the file.
  * @fd: file pointer for error handling.
  */
-void push(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd)
+void push(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
-	if (!tokens[1] || !isdigit(*tokens[1]))
+	(void) line_number;
+	int p_int;
+
+	stack_t *node = malloc(sizeof(stack_t));
+
+	if (node == NULL || tokens[1] == NULL)
 	{
-		dprintf(STDERR_FILENO, "L%d: usage: push integer\n", line_number);
-		free(cmd);
-		free_array(tokens);
-		free_stack(*stack);
-		fclose(fd);
+		fprintf(stderr, "L%d: usage: push integer\n", line_number);
+		free(tokens[1]);
+		free(tokens[0]);
+		free(tokens);
+		free(line);
+		free(node);
+		free_listint(*stack);
+		fclose(file);
 		exit(EXIT_FAILURE);
 	}
-
-	stack_t *new_node = malloc(sizeof(stack_t));
-
-	if (!new_node)
+	if (node != NULL)
 	{
-		fprintf(stderr, "Error: malloc failed\n");
-		free(cmd);
-		free_array(tokens);
-		free_stack(*stack);
-		fclose(fd);
-		exit(EXIT_FAILURE);
+		if (tokens[1] != NULL)
+		{
+			p_int = atoi(tokens[1]);
+		}
+
+		if (strcmp(tokens[1], "0") != 0 && p_int == 0)
+		{
+			fprintf(stderr, "L%d: usage: push integer\n", line_number);
+			free(tokens[1]);
+			free(tokens[0]);
+			free(tokens);
+			free(line);
+			free(node);
+			free_listint(*stack);
+			fclose(file);
+			exit(EXIT_FAILURE);
+		}
+		node->prev = NULL;
+		node->n = p_int;
+		node->next = (*stack);
+		if (node->next != NULL)
+		{
+			node->next->prev = node;
+		}
+			*stack = node;
 	}
 
-	new_node->n = atoi(tokens[1]);
-	new_node->prev = NULL;
-	new_node->next = *stack;
-
-	if (*stack)
-		(*stack)->prev = new_node;
-
-	*stack = new_node;
 }
 
 /**
- * pall - print all on the stack
- * @stack: linked list of nodes
- * @line_number: line number for errors
- * @line: pointer to string of getline function
- * @file: file in use
+ * pall - prints all the values on the stack.
+ * @stack: pointer to the stack.
+ * @line_number: line number in the Monty bytecode file.
+ * @cmd: original command from the file.
+ * @fd: file pointer for error handling.
  */
 void pall(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
@@ -62,11 +78,11 @@ void pall(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 	}
 }
 /**
- * pint - prints the value at the top of the stack
- * @stack: linked list of nodes
- * @line_number: line number for errors
- * @line: pointer to string of getline function
- * @file: file in use
+ * pint - prints the value at the top of the stack, followed by a new line.
+ * @stack: pointer to the stack.
+ * @line_number: line number in the Monty bytecode file.
+ * @cmd: original command from the file.
+ * @fd: file pointer for error handling.
  */
 void pint(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
@@ -88,8 +104,11 @@ void pint(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 	}
 }
 /**
- * pop - delet node
- *
+ * pop - removes the top element of the stack.
+ * @stack: pointer to the stack.
+ * @line_number: line number in the Monty bytecode file.
+ * @cmd: original command from the file.
+ * @fd: file pointer for error handling.
  */
 void pop(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
@@ -119,6 +138,13 @@ void pop(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 		exit(EXIT_FAILURE);
 	}
 }
+/**
+ * swap - swaps the top two elements of the stack.
+ * @stack: pointer to the stack.
+ * @line_number: line number in the Monty bytecode file.
+ * @cmd: original command from the file.
+ * @fd: file pointer for error handling.
+ */
 void swap(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
 	stack_t *head = *stack;

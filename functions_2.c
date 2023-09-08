@@ -1,8 +1,10 @@
 #include "monty.h"
 /**
- * sum - summ all elements with in linked list
- * @stack: head of linked list
- * Return: sum of elements
+ * add - adds the top two elements of the stack.
+ * @stack: pointer to the stack.
+ * @line_number: line number in the Monty bytecode file.
+ * @cmd: original command from the file.
+ * @fd: file pointer for error handling.
  */
 void add(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
@@ -21,11 +23,11 @@ void add(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 }
 
 /**
- * nop - does nothing
- * @stack: stack
- * @line_number: line from file
- * @line: pointer to line
- * @file: file opened
+ * nop - doesn't do anything.
+ * @stack: pointer to the stack.
+ * @line_number: line number in the Monty bytecode file.
+ * @cmd: original command from the file.
+ * @fd: file pointer for error handling.
  */
 void nop(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
