@@ -18,8 +18,6 @@ void add(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd)
 	(*stack)->n = sum;
 	free((*stack)->prev);
 
-		/*sum += (*stack)->next->n;
-		*stack = (*stack)->next;*/
 }
 
 /**
@@ -66,7 +64,13 @@ char **tokenization(char *ptr, char *delim)
 	free(token);
 	return (tokens);
 }
-
+/**
+ * get_op_function - static instructions in array
+ * @cmd: command from the file
+ * @fd: open file 
+ * Return: 
+ * Description: 
+ */
 void (*get_op_func(char **tokens))(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd)
 {
 	static instruction_t in_fun[] = {
