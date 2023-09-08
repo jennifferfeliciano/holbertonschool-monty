@@ -1,5 +1,26 @@
 #include "monty.h"
 /**
+ * sum - summ all elements with in linked list
+ * @stack: head of linked list
+ * Return: sum of elements
+ */
+void add(stack_t **stack, unsigned int line_number, char *line, FILE *file)
+{
+	int sum;
+	(void)line_number;
+	(void)line;
+	(void)file;
+
+	sum = (*stack)->n + (*stack)->next->n;
+	*stack = (*stack)->next;
+	(*stack)->n = sum;
+	free((*stack)->prev);
+
+		/*sum += (*stack)->next->n;
+		*stack = (*stack)->next;*/
+}
+
+/**
  * nop - does nothing
  * @stack: stack
  * @line_number: line from file
@@ -12,37 +33,6 @@ void nop(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 	(void)line_number;
 	(void)line;
 	(void)file;
-}
-void swap(stack_t **stack, unsigned int line_number, char *line, FILE *file)
-{
-	stack_t *head = *stack;
-	stack_t *body;
-	int head_value;
-	int body_value;
-
-	if (head != NULL)
-	{
-		body = (*stack)->next;
-	}
-
-	if (head != NULL && body != NULL)
-	{
-		head_value = head->n;
-		body_value = body->n;
-		head->n = body_value;
-		body->n = head_value;
-	}
-	else
-	{
-		fprintf(stderr, "L%u: can't swap, stack too short\n", line_number);
-		free(tokens[1]);
-		free(tokens[0]);
-		free(tokens);
-		free(line);
-		free(*stack);
-		fclose(file);
-		exit(EXIT_FAILURE);
-	}
 }
 
 /**
