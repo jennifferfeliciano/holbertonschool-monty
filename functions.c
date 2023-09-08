@@ -7,7 +7,7 @@
  * @cmd: original command from the file.
  * @fd: file pointer for error handling.
  */
-void push(stack_t **stack, unsigned int line_number, char *line, FILE *file)
+void push(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd
 {
 	(void) line_number;
 	int p_int;
@@ -20,10 +20,10 @@ void push(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 		free(tokens[1]);
 		free(tokens[0]);
 		free(tokens);
-		free(line);
+		free(cmd);
 		free(node);
 		free_listint(*stack);
-		fclose(file);
+		fclose(fd);
 		exit(EXIT_FAILURE);
 	}
 	if (node != NULL)
@@ -39,10 +39,10 @@ void push(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 			free(tokens[1]);
 			free(tokens[0]);
 			free(tokens);
-			free(line);
+			free(cmd);
 			free(node);
 			free_listint(*stack);
-			fclose(file);
+			fclose(fd);
 			exit(EXIT_FAILURE);
 		}
 		node->prev = NULL;
