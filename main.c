@@ -8,8 +8,8 @@
 
 int main(int ac, char **av)
 {
-	FILE *file;
-	char *line = NULL;
+	FILE *fd;
+	char *cmd = NULL;
 	size_t buffline = 0;
 	stack_t *stack = NULL;
 	unsigned int line_number = 1;
@@ -23,20 +23,20 @@ int main(int ac, char **av)
 		exit(EXIT_FAILURE);
 	}
 	
-	file = fopen(av[1], "r");
+	fd = fopen(av[1], "r");
 
-	if (file == NULL)
+	if (fd == NULL)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", av[1]);
 		exit (EXIT_FAILURE);
 	}
 
-	while (getline(&line, &buffline, file) != -1)
+	while (getline(&cmd, &buffline, fd) != -1)
 	{
-		tokens = tokenization(line, " \n");
+		tokens = tokenization(cmd, " \n");
 		if (tokens[0] != NULL || tokens[1] != NULL)
 		{
-			get_op_func(tokens)(&stack, line_number, line, file);
+			get_op_func(tokens)(&stack, line_number, cmd, fd;
 			line_number++;
 		}
 		free(tokens[1]);
@@ -44,7 +44,7 @@ int main(int ac, char **av)
 		free(tokens);
 	}
 	free_listint(stack);
-	free(line);
-	fclose(file);
+	free(cmd);
+	fclose(fd);
 	return (0);
 }
