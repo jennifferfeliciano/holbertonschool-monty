@@ -64,12 +64,12 @@ void push(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd)
  * @cmd: original command from the file.
  * @fd: file pointer for error handling.
  */
-void pall(stack_t **stack, unsigned int line_number, char *line, FILE *file)
+void pall(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd)
 {
 	stack_t *temp = *stack;
 	(void)line_number;
-	(void)line;
-	(void)file;
+	(void)cmd;
+	(void)fd;
 
 	while (temp != NULL)
 	{
@@ -84,7 +84,7 @@ void pall(stack_t **stack, unsigned int line_number, char *line, FILE *file)
  * @cmd: original command from the file.
  * @fd: file pointer for error handling.
  */
-void pint(stack_t **stack, unsigned int line_number, char *line, FILE *file)
+void pint(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd)
 {
 	(void)line_number;
 
@@ -98,8 +98,8 @@ void pint(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 		free(tokens[1]);
 		free(tokens[0]);
 		free(tokens);
-		free(line);
-		fclose(file);
+		free(cmd);
+		fclose(fd);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -110,11 +110,11 @@ void pint(stack_t **stack, unsigned int line_number, char *line, FILE *file)
  * @cmd: original command from the file.
  * @fd: file pointer for error handling.
  */
-void pop(stack_t **stack, unsigned int line_number, char *line, FILE *file)
+void pop(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd)
 {
 	stack_t *head = *stack;
-	(void)file;
-	(void)line;
+	(void)fd;
+	(void)cmd;
 
 
 	if (head != NULL)
@@ -133,8 +133,8 @@ void pop(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 		free(tokens[1]);
 		free(tokens[0]);
 		free(tokens);
-		free(line);
-		free(file);
+		free(cmd);
+		free(fd);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -145,7 +145,7 @@ void pop(stack_t **stack, unsigned int line_number, char *line, FILE *file)
  * @cmd: original command from the file.
  * @fd: file pointer for error handling.
  */
-void swap(stack_t **stack, unsigned int line_number, char *line, FILE *file)
+void swap(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd)
 {
 	stack_t *head = *stack;
 	stack_t *body;
@@ -170,9 +170,9 @@ void swap(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 		free(tokens[1]);
 		free(tokens[0]);
 		free(tokens);
-		free(line);
+		free(cmd);
 		free(*stack);
-		fclose(file);
+		fclose(fd);
 		exit(EXIT_FAILURE);
 	}
 }

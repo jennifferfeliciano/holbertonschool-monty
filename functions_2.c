@@ -6,12 +6,12 @@
  * @cmd: original command from the file.
  * @fd: file pointer for error handling.
  */
-void add(stack_t **stack, unsigned int line_number, char *line, FILE *file)
+void add(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd)
 {
 	int sum;
 	(void)line_number;
-	(void)line;
-	(void)file;
+	(void)cmd;
+	(void)fd;
 
 	sum = (*stack)->n + (*stack)->next->n;
 	*stack = (*stack)->next;
@@ -29,12 +29,12 @@ void add(stack_t **stack, unsigned int line_number, char *line, FILE *file)
  * @cmd: original command from the file.
  * @fd: file pointer for error handling.
  */
-void nop(stack_t **stack, unsigned int line_number, char *line, FILE *file)
+void nop(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd)
 {
 	(void)stack;
 	(void)line_number;
-	(void)line;
-	(void)file;
+	(void)cmd;
+	(void)fd;
 }
 char **tokens = NULL;
 /**
@@ -42,9 +42,7 @@ char **tokens = NULL;
  *
  * @ptr: String of the command line
  * @delim: Delimiter
- *
  * Return: the array of tokens
- *
  * Description: We first allocate space for the array of tokens. 
  */
 char **tokenization(char *ptr, char *delim)
@@ -69,7 +67,7 @@ char **tokenization(char *ptr, char *delim)
 	return (tokens);
 }
 
-void (*get_op_func(char **tokens))(stack_t **stack, unsigned int line_number, char *line, FILE *file)
+void (*get_op_func(char **tokens))(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd)
 {
 	static instruction_t in_fun[] = {
     {"push", push},
@@ -99,17 +97,17 @@ void (*get_op_func(char **tokens))(stack_t **stack, unsigned int line_number, ch
  * unkn_func - print error message and free memory
  * @stack: stack
  * @line_number: number of line
- * @line: pointer to line
- * @file: opened file
+ * @cmd: pointer to line
+ * @fd: opened file
  */
-void unkn_func(stack_t **stack, unsigned int line_number, char *line, FILE *file)
+void unkn_func(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd)
 {
 	fprintf(stderr, "L%d: unknown instruction %s\n", line_number, tokens[0]);
 	free(tokens[1]);
 	free(tokens[0]);
 	free(tokens);
-	free(line);
+	free(cmd);
 	free_listint(*stack);
-	fclose(file);
+	fclose(fd);
 	exit(EXIT_FAILURE);
 }

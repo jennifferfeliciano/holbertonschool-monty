@@ -42,10 +42,10 @@ typedef struct instruction_s
 } instruction_t;
 
 void push(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd);
-void pall(stack_t **stack, unsigned int line_number, char *line, FILE *file);
-void pint(stack_t **stack, unsigned int line_number, char *line, FILE *file);
-void pop(stack_t **stack, unsigned int line_number, char *line, FILE *file);
-void swap(stack_t **stack, unsigned int line_number, char *line, FILE *file);
+void pall(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd);
+void pint(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd);
+void pop(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd);
+void swap(stack_t **stack, unsigned int line_number, char *line, FILE *fd);
 void add(stack_t **stack, unsigned int line_number, char *line, FILE *file);
 void nop(stack_t **stack, unsigned int line_number, char *line, FILE *file);
 void unkn_func(stack_t **stack, unsigned int line_number, char *line, FILE *file);
