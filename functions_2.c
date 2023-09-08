@@ -34,7 +34,7 @@ void nop(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 	(void)line;
 	(void)file;
 }
-
+char **tokens = NULL;
 /**
  * tokenization - extract tokens from the getline command
  *

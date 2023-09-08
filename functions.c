@@ -1,5 +1,5 @@
 #include "monty.h"
-char **tokens = NULL;
+
 /**
  * push - push a new node to the stack
  * @stack: linked list of nodes
