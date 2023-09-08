@@ -7,7 +7,7 @@
  * @cmd: original command from the file.
  * @fd: file pointer for error handling.
  */
-void push(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd
+void push(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd)
 {
 	(void) line_number;
 	int p_int;
