@@ -1,61 +1,46 @@
 #include "monty.h"
 
 /**
- * push - push a new node to the stack
- * @stack: linked list of nodes
- * @line_number: line number
- * @line: pointer to string of getline function
- * @file: file in use
+ * push - pushes an element onto the stack.
+ * @stack: pointer to the stack.
+ * @line_number: line number in the Monty bytecode file.
+ * @cmd: original command from the file.
+ * @fd: file pointer for error handling.
  */
-void push(stack_t **stack, unsigned int line_number, char *line, FILE *file)
+void push(stack_t **stack, unsigned int line_number, char *cmd, FILE *fd)
 {
-	int p_int;
-	stack_t *node = malloc(sizeof(stack_t));
-	(void) line_number;
-
-
-	if (node == NULL || tokens[1] == NULL)
+	if (!tokens[1] || !isdigit(*tokens[1]))
 	{
-		fprintf(stderr, "L%d: usage: push integer\n", line_number);
-		free(tokens[1]);
-		free(tokens[0]);
-		free(tokens);
-		free(line);
-		free(node);
-		free_listint(*stack);
-		fclose(file);
+		dprintf(STDERR_FILENO, "L%d: usage: push integer\n", line_number);
+		free(cmd);
+		free_array(tokens);
+		free_stack(*stack);
+		fclose(fd);
 		exit(EXIT_FAILURE);
 	}
-	if (node != NULL)
-	{
-		if (tokens[1] != NULL)
-		{
-			p_int = atoi(tokens[1]);
-		}
 
-		if (strcmp(tokens[1], "0") != 0 && p_int == 0)
-		{
-			fprintf(stderr, "L%d: usage: push integer\n", line_number);
-			free(tokens[1]);
-			free(tokens[0]);
-			free(tokens);
-			free(line);
-			free(node);
-			free_listint(*stack);
-			fclose(file);
-			exit(EXIT_FAILURE);
-		}
-		node->prev = NULL;
-		node->n = p_int;
-		node->next = (*stack);
-		if (node->next != NULL)
-		{
-			node->next->prev = node;
-		}
-			*stack = node;
+	stack_t *new_node = malloc(sizeof(stack_t));
+
+	if (!new_node)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		free(cmd);
+		free_array(tokens);
+		free_stack(*stack);
+		fclose(fd);
+		exit(EXIT_FAILURE);
 	}
 
+	new_node->n = atoi(tokens[1]);
+	new_node->prev = NULL;
+	new_node->next = *stack;
+
+	if (*stack)
+		(*stack)->prev = new_node;
+
+	*stack = new_node;
 }
+
 /**
  * pall - print all on the stack
  * @stack: linked list of nodes
