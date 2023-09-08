@@ -110,7 +110,7 @@ void (*get_op_func(char **tokens))(stack_t **stack, unsigned int line_number, ch
  * @line: pointer to line
  * @file: opened file
  */
-void unkn_func(stack_t **stack, unsigned int line_number, char *line, FILE *file)
+void free_func(stack_t **stack, unsigned int line_number, char *line, FILE *file)
 {
 	fprintf(stderr, "L%d: unknown instruction %s\n", line_number, tokens[0]);
 	free(tokens[1]);
